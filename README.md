@@ -19,27 +19,27 @@ composer require "simple-bus/symfony-bridge"
 services:
   # Create
   app.handler.create_user:
-    class: App\Domain\User\Command\CreateUser
+    class: App\Domain\User\Command\CreateUserHandler
     arguments:
       - "@app.repository.user"
     tags:
-      - { name: command_handler, handles: App\Domain\User\Handler\CreateUserHandler }
+      - { name: command_handler, handles: App\Domain\User\Handler\CreateUser }
 
   # Update
   app.handler.update_user:
-    class: App\Domain\User\Command\UpdateUser
+    class: App\Domain\User\Command\UpdateUserHandler
     arguments:
       - "@app.repository.user"
     tags:
-      - { name: command_handler, handles: App\Domain\User\Handler\UpdateUserHandler }
+      - { name: command_handler, handles: App\Domain\User\Handler\UpdateUser }
 
   # Delete
   app.handler.delete_user:
-    class: App\Domain\User\Command\DeleteUser
+    class: App\Domain\User\Command\DeleteUserHandler
     arguments:
       - "@app.repository.user"
     tags:
-      - { name: command_handler, handles: App\Domain\User\Handler\DeleteUserHandler }
+      - { name: command_handler, handles: App\Domain\User\Handler\DeleteUser }
 ```
 
 **Note:** For newer Symfony versions this can automatically work without adding it to a yaml file.
@@ -171,7 +171,7 @@ $userId = 1;
 $this->commandBus->handle(new DeleteUser($userId));
 ```
 
-### Extending
+### Extending with DataTransferObject
 
 Using a DataTransferObject.
 F.e.: `UserDataTransferObject`
@@ -207,7 +207,7 @@ class CreateCommand extends UserDataTransferObject
 
 namespace App\Domain\User\Command;
 
-class UserCommand extends UserDataTransferObject
+class UpdateCommand extends UserDataTransferObject
 {
 
 }
