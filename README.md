@@ -1,5 +1,7 @@
 # Command + Command handlers
 
+**Note**: Do not compare this with "console commands", that is something different.
+
 There are a lot of different vendors out there for this:
 - `Proof` (we use this one in our project VVSG)
 - `SimpleBus`
