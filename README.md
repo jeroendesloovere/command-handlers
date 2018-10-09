@@ -258,7 +258,10 @@ namespace App\Domain\User\Command;
 
 class UpdateCommand extends UserDataTransferObject
 {
-
+    public function __construct(User $user)
+    {
+        parent::__construct($user);
+    }
 }
 ```
 
