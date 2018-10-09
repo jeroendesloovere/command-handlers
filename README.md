@@ -3,8 +3,8 @@
 **Note**: Do not compare this with "console commands", that is something different.
 
 There are a lot of different vendors out there for this:
-- [`Prooph`](http://getprooph.org/) (we use this one in our project VVSG)
-- `SimpleBus`
+- [`Prooph`](http://getprooph.org/)
+- `SimpleBus` (The following example uses this one)
 - ...
 
 ## Setting up
