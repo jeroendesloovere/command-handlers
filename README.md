@@ -143,6 +143,22 @@ class User
         $this->firstName = $firstName;
         $this->lastName = $lastName;
     }
+    
+    /**
+     * @return string
+     */
+    public  function getFirstName() : string
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * @return string
+     */
+    public  function getLastName() : string
+    {
+        return $this->lastName;
+    }
 }
 ```
 
@@ -173,7 +189,7 @@ $userId = 1;
 $this->commandBus->handle(new DeleteUser($userId));
 ```
 
-### Extending with DataTransferObject
+### Writing cleaner code using DataTransferObject
 
 Using a DataTransferObject.
 F.e.: `UserDataTransferObject`
@@ -185,11 +201,42 @@ namespace App\Domain\User;
 
 class UserDataTransferObject
 {
-    /** @var string */
+    /**
+     * @var User
+     */
+    protected $userEntity;
+    
+    /**
+     * @var string 
+     */
     public $firstName;
 
-    /** @var string */
+    /**
+     * @var string 
+     */
     public $lastName;
+    
+    public function __construct(User $user = null)
+    {
+        $this->userEntity = $user;
+        
+        if (!$this->hasExistingUser()) {
+            return;
+        }
+
+        $this->firstName = $this->userEntity->getFirstName();
+        $this->lastName = $this->userEntity->getLastName();
+    }
+
+    public function getUserEntity() : User
+    {
+        return $this->userEntity;
+    }
+
+    public function hasExistingUser() : bool
+    {
+        return $this->userEntity instanceof User;
+    }
 }
 ```
 
@@ -212,5 +259,59 @@ namespace App\Domain\User\Command;
 class UpdateCommand extends UserDataTransferObject
 {
 
+}
+```
+
+We can now change the User class to the following:
+
+```php
+<?php
+
+namespace App\Domain\User;
+
+use App\Domain\User\UserDataTransferObject;
+
+class User
+{
+    private $firstName;
+    private $lastName;
+
+    private function __construct(string $firstName, string $lastName)
+    {
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
+    }
+
+    private function fromDataTransferObject(UserDataTransferObject $dataTransferObject) : User
+    {
+        if ($dataTransferObject->hasExistingUser()) {
+            $user = $dataTransferObject->getUserEntity();
+            $user->firstName = $dataTransferObject->firstName;
+            $user->lastName = $dataTransferObject->lastName;
+            
+            return $user;
+        }
+
+        return new self(
+            $dataTransferObject->firstName,
+            $dataTransferObject->lastName
+        );
+    }
+    
+    /**
+     * @return string
+     */
+    public  function getFirstName() : string
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * @return string
+     */
+    public  function getLastName() : string
+    {
+        return $this->lastName;
+    }
 }
 ```
