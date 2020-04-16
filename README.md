@@ -3,9 +3,13 @@
 **Note**: Do not compare this with "console commands", that is something different.
 
 There are a lot of different vendors out there for this:
+- [Symfony Messenger](https://symfony.com/doc/current/components/messenger.html)
 - [`Prooph`](http://getprooph.org/)
 - `SimpleBus` (The following example uses this one)
 - ...
+
+I strongly recommend you use the all new Symfony Messenger, it is great.
+In the past I also used SimpleBus in ForkCMS and Prooph in event-sourced apps.
 
 ## Setting up
 
